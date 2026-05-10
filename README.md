@@ -11,28 +11,30 @@ Documents reference each other via wiki-style `[[links]]` and are also readable 
 ```
 Problems/
 ├── ADR/                    # why we decided what we decided
-│   └── RU/                 # Russian-language records
+│   ├── RU/                 # Russian-language records (*.ru.md)
+│   └── EN/                 # English-language records (*.en.md)
 └── Solvings/               # how to actually do it
-    └── RU/                 # Russian-language guides
+    ├── RU/                 # Russian-language guides (*.ru.md)
+    └── EN/                 # English-language guides (*.en.md)
 ```
 
-Sub-folders by language ID (`RU/`, future `EN/`, …) leave room for translations without breaking existing wiki-links.
+Each translated document has a language suffix in the file name (`.ru.md` / `.en.md`), so wiki-links inside the documents resolve unambiguously to the same-language counterpart.
 
 ## Architecture Decision Records
 
-| ID | Title | Status |
-|---|---|---|
-| [ADR-0001](Problems/ADR/RU/ADR-0001-package-center-hangs-on-sectigo-ocsp.md) | Bypass OCSP check for `pkgupdate7.synology.com` via blackhole routes | superseded by ADR-0003 |
-| [ADR-0002](Problems/ADR/RU/ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.md) | Reconcile stale update URLs in `/etc/synoinfo.conf` after a DSM upgrade | accepted |
-| [ADR-0003](Problems/ADR/RU/ADR-0003-package-center-via-external-proxy.md) | Route Synology DSM service traffic through an external HTTP proxy | accepted (supersedes ADR-0001) |
+| ID | Title | Status | EN | RU |
+|---|---|---|---|---|
+| ADR-0001 | Bypass OCSP check for `pkgupdate7.synology.com` via blackhole routes | superseded by ADR-0003 | [EN](Problems/ADR/EN/ADR-0001-package-center-hangs-on-sectigo-ocsp.en.md) | [RU](Problems/ADR/RU/ADR-0001-package-center-hangs-on-sectigo-ocsp.ru.md) |
+| ADR-0002 | Reconcile stale update URLs in `/etc/synoinfo.conf` after a DSM upgrade | accepted | [EN](Problems/ADR/EN/ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.en.md) | [RU](Problems/ADR/RU/ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.ru.md) |
+| ADR-0003 | Route Synology DSM service traffic through an external HTTP proxy | accepted (supersedes ADR-0001) | [EN](Problems/ADR/EN/ADR-0003-package-center-via-external-proxy.en.md) | [RU](Problems/ADR/RU/ADR-0003-package-center-via-external-proxy.ru.md) |
 
 ## Solving Guides
 
-| Guide | Status |
-|---|---|
-| [Fix stale update URLs in `/etc/synoinfo.conf`](Problems/Solvings/RU/Solving-fix-stale-update-urls-in-synoinfo.md) | applied |
-| [Package Center via external HTTP proxy](Problems/Solvings/RU/Solving-package-center-external-proxy.md) | applied |
-| [(deprecated) Package Center via Cloudflare blackhole](Problems/Solvings/RU/Solving-package-center-ocsp-cloudflare-blackhole.md) | deprecated |
+| Guide | Status | EN | RU |
+|---|---|---|---|
+| Fix stale update URLs in `/etc/synoinfo.conf` | applied | [EN](Problems/Solvings/EN/Solving-fix-stale-update-urls-in-synoinfo.en.md) | [RU](Problems/Solvings/RU/Solving-fix-stale-update-urls-in-synoinfo.ru.md) |
+| Package Center via external HTTP proxy | applied | [EN](Problems/Solvings/EN/Solving-package-center-external-proxy.en.md) | [RU](Problems/Solvings/RU/Solving-package-center-external-proxy.ru.md) |
+| (deprecated) Package Center via Cloudflare blackhole | deprecated | [EN](Problems/Solvings/EN/Solving-package-center-ocsp-cloudflare-blackhole.en.md) | [RU](Problems/Solvings/RU/Solving-package-center-ocsp-cloudflare-blackhole.ru.md) |
 
 ## Cross-document map
 

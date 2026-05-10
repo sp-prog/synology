@@ -2,7 +2,7 @@
 title: (DEPRECATED) Починка зависающих обновлений Package Center через blackhole для Cloudflare
 date: 2026-05-09
 status: deprecated
-superseded_by: "[[Solving-package-center-external-proxy]]"
+superseded_by: "[[Solving-package-center-external-proxy.ru]]"
 hardware: DS218play
 dsm: 7.3.2-86009 Update 3
 tags:
@@ -19,9 +19,9 @@ tags:
   - solving
   - deprecated
 related:
-  - "[[ADR-0001-package-center-hangs-on-sectigo-ocsp]]"
-  - "[[ADR-0003-package-center-via-external-proxy]]"
-  - "[[Solving-package-center-external-proxy]]"
+  - "[[ADR-0001-package-center-hangs-on-sectigo-ocsp.ru]]"
+  - "[[ADR-0003-package-center-via-external-proxy.ru]]"
+  - "[[Solving-package-center-external-proxy.ru]]"
 ---
 
 # (DEPRECATED) Blackhole для Cloudflare
@@ -32,7 +32,7 @@ related:
 > - GUI Package Center либо «Сбой подключения», либо «крутится»;
 > - после ребута маршруты приходится восстанавливать вручную, keepalive не покрывает все случаи.
 >
-> **Рабочее решение** — внешний HTTP-прокси на VPS вне зоны DPI: см. [[Solving-package-center-external-proxy]].
+> **Рабочее решение** — внешний HTTP-прокси на VPS вне зоны DPI: см. [[Solving-package-center-external-proxy.ru]].
 >
 > Этот документ оставлен ради:
 > 1. Истории и шагов **отката** (если уже применили и хотите вернуть всё назад).
@@ -46,11 +46,11 @@ related:
 
 Симптом-сигнатура DPI: `curl -sI` (HEAD ~700 байт) проходит, `curl GET` со списком пакетов обрезается **ровно на 16384 байт** (`/tmp/getlist.out` ровно 16 КБ). Это типовое поведение фильтра, который пропускает TCP-handshake и первое окно зашифрованных данных, потом дропает молча. Маршрутизация и MTU тут не помогают — фильтрация по содержимому, а не по адресу.
 
-Подробный разбор — [[ADR-0001-package-center-hangs-on-sectigo-ocsp#Почему решение не работает в условиях DPI]].
+Подробный разбор — [[ADR-0001-package-center-hangs-on-sectigo-ocsp.ru#Почему решение не работает в условиях DPI]].
 
 ## Что делает (делал) этот подход — кратко
 
-1. Обновляет URL в `/etc/synoinfo.conf` (это полезно само по себе → отдельная процедура [[Solving-fix-stale-update-urls-in-synoinfo]]).
+1. Обновляет URL в `/etc/synoinfo.conf` (это полезно само по себе → отдельная процедура [[Solving-fix-stale-update-urls-in-synoinfo.ru]]).
 2. Чистит сторонние feeds в `/usr/syno/etc/packages/feeds`.
 3. Добавляет `ip route add blackhole` для 4 подсетей Cloudflare (`104.18.0.0/16`, `104.26.0.0/16`, `172.64.0.0/16`, `172.67.0.0/16`).
 4. Поднимает /32-исключения через шлюз для IP `pkgautoupdate.synologyupdate.com`.
@@ -78,7 +78,7 @@ cp <файл>.bak.<метка> <файл>
 ```
 
 Файлы, которые могли быть изменены в ходе этого подхода:
-- `/etc/synoinfo.conf` — правка URL обновлений (см. также [[Solving-fix-stale-update-urls-in-synoinfo]]).
+- `/etc/synoinfo.conf` — правка URL обновлений (см. также [[Solving-fix-stale-update-urls-in-synoinfo.ru]]).
 - `/usr/syno/etc/packages/feeds` — список сторонних репозиториев.
 - `/etc/hosts` — заглушки для OCSP/CRL-доменов Sectigo.
 
@@ -94,16 +94,16 @@ synosystemctl restart synoscgi
 
 ## Что делать вместо этого
 
-Перейти на рабочее решение через внешний прокси: [[Solving-package-center-external-proxy]].
+Перейти на рабочее решение через внешний прокси: [[Solving-package-center-external-proxy.ru]].
 
 ## Что осталось валидным из этой ветки расследования
 
-- Восстановление актуальных URL в `/etc/synoinfo.conf` — отдельная задача, не зависит от blackhole. См. [[Solving-fix-stale-update-urls-in-synoinfo]].
+- Восстановление актуальных URL в `/etc/synoinfo.conf` — отдельная задача, не зависит от blackhole. См. [[Solving-fix-stale-update-urls-in-synoinfo.ru]].
 - Чистка / возврат сторонних feeds через GUI или SSH — стандартная процедура, не требует никаких костылей.
 
 ## Ссылки
 
-- ADR (с разбором, почему подход провалился): [[ADR-0001-package-center-hangs-on-sectigo-ocsp]]
-- Замещающее ADR: [[ADR-0003-package-center-via-external-proxy]]
-- Замещающий Solving: [[Solving-package-center-external-proxy]]
-- Связанная (валидная) проблема URL: [[Solving-fix-stale-update-urls-in-synoinfo]]
+- ADR (с разбором, почему подход провалился): [[ADR-0001-package-center-hangs-on-sectigo-ocsp.ru]]
+- Замещающее ADR: [[ADR-0003-package-center-via-external-proxy.ru]]
+- Замещающий Solving: [[Solving-package-center-external-proxy.ru]]
+- Связанная (валидная) проблема URL: [[Solving-fix-stale-update-urls-in-synoinfo.ru]]

@@ -11,28 +11,30 @@
 ```
 Problems/
 ├── ADR/                    # почему принято такое решение
-│   └── RU/                 # документы на русском
+│   ├── RU/                 # документы на русском (*.ru.md)
+│   └── EN/                 # документы на английском (*.en.md)
 └── Solvings/               # как именно это сделать
-    └── RU/                 # инструкции на русском
+    ├── RU/                 # инструкции на русском (*.ru.md)
+    └── EN/                 # инструкции на английском (*.en.md)
 ```
 
-Разделение по идентификаторам языка (`RU/`, в перспективе `EN/`, …) оставляет место под переводы без поломки существующих wiki-ссылок.
+У каждого переведённого документа в имени файла стоит языковой суффикс (`.ru.md` / `.en.md`), поэтому wiki-ссылки внутри документов однозначно резолвятся на одноязычную копию.
 
 ## Architecture Decision Records
 
-| ID | Название | Статус |
-|---|---|---|
-| [ADR-0001](Problems/ADR/RU/ADR-0001-package-center-hangs-on-sectigo-ocsp.md) | Обход OCSP-проверки `pkgupdate7.synology.com` через blackhole-маршруты | superseded by ADR-0003 |
-| [ADR-0002](Problems/ADR/RU/ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.md) | Синхронизация устаревших URL обновлений в `/etc/synoinfo.conf` после апгрейда DSM | accepted |
-| [ADR-0003](Problems/ADR/RU/ADR-0003-package-center-via-external-proxy.md) | Доступ Package Center к Synology через внешний HTTP-прокси | accepted (supersedes ADR-0001) |
+| ID | Название | Статус | RU | EN |
+|---|---|---|---|---|
+| ADR-0001 | Обход OCSP-проверки `pkgupdate7.synology.com` через blackhole-маршруты | superseded by ADR-0003 | [RU](Problems/ADR/RU/ADR-0001-package-center-hangs-on-sectigo-ocsp.ru.md) | [EN](Problems/ADR/EN/ADR-0001-package-center-hangs-on-sectigo-ocsp.en.md) |
+| ADR-0002 | Синхронизация устаревших URL обновлений в `/etc/synoinfo.conf` после апгрейда DSM | accepted | [RU](Problems/ADR/RU/ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.ru.md) | [EN](Problems/ADR/EN/ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.en.md) |
+| ADR-0003 | Доступ Package Center к Synology через внешний HTTP-прокси | accepted (supersedes ADR-0001) | [RU](Problems/ADR/RU/ADR-0003-package-center-via-external-proxy.ru.md) | [EN](Problems/ADR/EN/ADR-0003-package-center-via-external-proxy.en.md) |
 
 ## Solving — пошаговые инструкции
 
-| Инструкция | Статус |
-|---|---|
-| [Починка устаревших URL в `/etc/synoinfo.conf`](Problems/Solvings/RU/Solving-fix-stale-update-urls-in-synoinfo.md) | applied |
-| [Package Center через внешний HTTP-прокси](Problems/Solvings/RU/Solving-package-center-external-proxy.md) | applied |
-| [(deprecated) Package Center через blackhole для Cloudflare](Problems/Solvings/RU/Solving-package-center-ocsp-cloudflare-blackhole.md) | deprecated |
+| Инструкция | Статус | RU | EN |
+|---|---|---|---|
+| Починка устаревших URL в `/etc/synoinfo.conf` | applied | [RU](Problems/Solvings/RU/Solving-fix-stale-update-urls-in-synoinfo.ru.md) | [EN](Problems/Solvings/EN/Solving-fix-stale-update-urls-in-synoinfo.en.md) |
+| Package Center через внешний HTTP-прокси | applied | [RU](Problems/Solvings/RU/Solving-package-center-external-proxy.ru.md) | [EN](Problems/Solvings/EN/Solving-package-center-external-proxy.en.md) |
+| (deprecated) Package Center через blackhole для Cloudflare | deprecated | [RU](Problems/Solvings/RU/Solving-package-center-ocsp-cloudflare-blackhole.ru.md) | [EN](Problems/Solvings/EN/Solving-package-center-ocsp-cloudflare-blackhole.en.md) |
 
 ## Карта связей между документами
 

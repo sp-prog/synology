@@ -15,9 +15,9 @@ tags:
   - cloudflare
   - adr
 related:
-  - "[[ADR-0001-package-center-hangs-on-sectigo-ocsp]]"
-  - "[[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade]]"
-  - "[[Solving-package-center-external-proxy]]"
+  - "[[ADR-0001-package-center-hangs-on-sectigo-ocsp.en]]"
+  - "[[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.en]]"
+  - "[[Solving-package-center-external-proxy.en]]"
 ---
 
 # ADR-0003 — Reach Package Center via an external HTTP proxy
@@ -29,7 +29,7 @@ related:
 ## Context
 
 ### Limits of the previous approach
-[[ADR-0001-package-center-hangs-on-sectigo-ocsp]] assumed that the `synopkg`/Package Center hang was caused by an OCSP check on the `update7.synology.com` certificate — Sectigo's OCSP responder lives on Cloudflare, the ISP throttles Cloudflare, TLS waits for an OCSP timeout. The `ip route blackhole` solution removed the OCSP symptom but:
+[[ADR-0001-package-center-hangs-on-sectigo-ocsp.en]] assumed that the `synopkg`/Package Center hang was caused by an OCSP check on the `update7.synology.com` certificate — Sectigo's OCSP responder lives on Cloudflare, the ISP throttles Cloudflare, TLS waits for an OCSP timeout. The `ip route blackhole` solution removed the OCSP symptom but:
 
 1. Did not cover `pkgautoupdate.synologyupdate.com` — that domain is **legitimately required** by the Package Center GUI (302 redirect from `pkgupdate7.synology.com`) and lives **entirely on Cloudflare**.
 2. Narrow `/32` exceptions for individual IPs do not survive Cloudflare IP rotation.
@@ -53,7 +53,7 @@ Routing-level workarounds do not work against content-based filtering.
 ### Option A — `ip route blackhole` + `/32` for Cloudflare IPs
 - **Pros:** local-only, no external infrastructure.
 - **Cons:** does not cover `pkgautoupdate.synologyupdate.com`, IP rotation, no defense against content-based DPI.
-- **Decision:** **superseded**, see [[ADR-0001-package-center-hangs-on-sectigo-ocsp]].
+- **Decision:** **superseded**, see [[ADR-0001-package-center-hangs-on-sectigo-ocsp.en]].
 
 ### Option B — VPN client on the NAS (OpenVPN / L2TP)
 - **Pros:** DSM supports it out of the box (Network Interface → Create VPN profile).
@@ -96,9 +96,9 @@ The alternative implementation (a self-hosted HTTP proxy on a VPS, e.g. `tinypro
 Steps:
 1. Obtain HTTP-proxy parameters from the VPN provider (host, port, login, password).
 2. Configure the proxy in **DSM → Control Panel → Network → Connectivity → Proxy**, with authentication.
-3. Roll back the ADR-0001 artefacts (blackhole routes, `/32`, MTU, Task Scheduler tasks) — see [[Solving-package-center-ocsp-cloudflare-blackhole#Rollback]].
+3. Roll back the ADR-0001 artefacts (blackhole routes, `/32`, MTU, Task Scheduler tasks) — see [[Solving-package-center-ocsp-cloudflare-blackhole.en#Rollback]].
 
-Detailed procedure — [[Solving-package-center-external-proxy]].
+Detailed procedure — [[Solving-package-center-external-proxy.en]].
 
 ## Consequences
 
@@ -135,7 +135,7 @@ Symptoms typical of the unfixed problem (for "before/after" comparison):
 
 ## Links
 
-- Procedure: [[Solving-package-center-external-proxy]]
-- Rollback of the previous approach: [[Solving-package-center-ocsp-cloudflare-blackhole#Rollback]]
-- Related (still applicable) task: [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade]]
+- Procedure: [[Solving-package-center-external-proxy.en]]
+- Rollback of the previous approach: [[Solving-package-center-ocsp-cloudflare-blackhole.en#Rollback]]
+- Related (still applicable) task: [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.en]]
 - DSM: Control Panel → Network → Connectivity → Proxy (built-in setting).

@@ -15,9 +15,9 @@ tags:
   - cloudflare
   - adr
 related:
-  - "[[ADR-0001-package-center-hangs-on-sectigo-ocsp]]"
-  - "[[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade]]"
-  - "[[Solving-package-center-external-proxy]]"
+  - "[[ADR-0001-package-center-hangs-on-sectigo-ocsp.ru]]"
+  - "[[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.ru]]"
+  - "[[Solving-package-center-external-proxy.ru]]"
 ---
 
 # ADR-0003 — Доступ Package Center через внешний HTTP-прокси
@@ -29,7 +29,7 @@ related:
 ## Контекст
 
 ### Ограничения предыдущего подхода
-[[ADR-0001-package-center-hangs-on-sectigo-ocsp]] предполагало, что зависание `synopkg`/Package Center вызывается OCSP-проверкой сертификата `update7.synology.com` — Sectigo-OCSP сидит на Cloudflare, провайдер режет Cloudflare, TLS ждёт OCSP-таймаут. Решение через `ip route blackhole` устраняло симптом OCSP, но:
+[[ADR-0001-package-center-hangs-on-sectigo-ocsp.ru]] предполагало, что зависание `synopkg`/Package Center вызывается OCSP-проверкой сертификата `update7.synology.com` — Sectigo-OCSP сидит на Cloudflare, провайдер режет Cloudflare, TLS ждёт OCSP-таймаут. Решение через `ip route blackhole` устраняло симптом OCSP, но:
 
 1. Не покрывало `pkgautoupdate.synologyupdate.com` — этот домен **легитимно нужен** GUI Package Center (302 redirect от `pkgupdate7.synology.com`), и сидит **полностью на Cloudflare**.
 2. Узкие /32-исключения для конкретных IP не выдерживают ротации Cloudflare.
@@ -53,7 +53,7 @@ related:
 ### Вариант A — `ip route blackhole` + /32 для Cloudflare-IP
 - **Плюсы:** локально, не требует внешней инфраструктуры.
 - **Минусы:** не покрывает `pkgautoupdate.synologyupdate.com`, ротация IP, не справляется с DPI на содержимом.
-- **Решение:** **superseded**, см. [[ADR-0001-package-center-hangs-on-sectigo-ocsp]].
+- **Решение:** **superseded**, см. [[ADR-0001-package-center-hangs-on-sectigo-ocsp.ru]].
 
 ### Вариант B — VPN-клиент на NAS (OpenVPN/L2TP)
 - **Плюсы:** DSM поддерживает из коробки (Network Interface → Create VPN profile).
@@ -96,9 +96,9 @@ related:
 Шаги:
 1. Получить параметры HTTP-прокси у VPN-провайдера (адрес, порт, логин, пароль).
 2. Прописать прокси в **DSM → Control Panel → Network → Connectivity → Proxy** с авторизацией.
-3. Откатить артефакты ADR-0001 (blackhole-маршруты, /32, MTU, Task Scheduler-задачи) — см. [[Solving-package-center-ocsp-cloudflare-blackhole#Откат]].
+3. Откатить артефакты ADR-0001 (blackhole-маршруты, /32, MTU, Task Scheduler-задачи) — см. [[Solving-package-center-ocsp-cloudflare-blackhole.ru#Откат]].
 
-Подробная инструкция — [[Solving-package-center-external-proxy]].
+Подробная инструкция — [[Solving-package-center-external-proxy.ru]].
 
 ## Последствия
 
@@ -135,7 +135,7 @@ related:
 
 ## Ссылки
 
-- Инструкция применения: [[Solving-package-center-external-proxy]]
-- Откат предыдущего подхода: [[Solving-package-center-ocsp-cloudflare-blackhole#Откат]]
-- Сопутствующая (всё ещё нужная) задача: [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade]]
+- Инструкция применения: [[Solving-package-center-external-proxy.ru]]
+- Откат предыдущего подхода: [[Solving-package-center-ocsp-cloudflare-blackhole.ru#Откат]]
+- Сопутствующая (всё ещё нужная) задача: [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.ru]]
 - DSM: Control Panel → Network → Connectivity → Proxy (встроенный механизм).

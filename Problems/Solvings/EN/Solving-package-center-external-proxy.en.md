@@ -13,9 +13,9 @@ tags:
   - howto
   - solving
 related:
-  - "[[ADR-0003-package-center-via-external-proxy]]"
-  - "[[Solving-package-center-ocsp-cloudflare-blackhole]]"
-  - "[[Solving-fix-stale-update-urls-in-synoinfo]]"
+  - "[[ADR-0003-package-center-via-external-proxy.en]]"
+  - "[[Solving-package-center-ocsp-cloudflare-blackhole.en]]"
+  - "[[Solving-fix-stale-update-urls-in-synoinfo.en]]"
 ---
 
 # Reach Package Center via an external HTTP proxy
@@ -24,17 +24,17 @@ related:
 > On networks with DPI filtering (TSPU and equivalents) NAS traffic to Cloudflare is cut by content, so Package Center and `synopkg` hang.
 > **Fix:** take a ready-made HTTP proxy from a VPN provider and configure it in **DSM → Control Panel → Network → Connectivity → Proxy**. DSM forwards all outgoing package-layer traffic through the proxy.
 > The whole procedure is performed in the DSM GUI; no terminal work is required.
-> **Decision:** [[ADR-0003-package-center-via-external-proxy]].
+> **Decision:** [[ADR-0003-package-center-via-external-proxy.en]].
 
 ## When to apply
 
 ✅ Applicable when:
-- The network between the NAS and the internet performs **DPI** (typical signature: responses from Cloudflare resources are cut by content; observed during [[ADR-0001-package-center-hangs-on-sectigo-ocsp]]).
+- The network between the NAS and the internet performs **DPI** (typical signature: responses from Cloudflare resources are cut by content; observed during [[ADR-0001-package-center-hangs-on-sectigo-ocsp.en]]).
 - Symptom: Package Center hangs / shows "Connection failed".
 - A subscription to a commercial VPN service exists with an HTTP/HTTPS proxy mode, or any equivalent ready-made proxy outside the DPI zone.
 
 ❌ Not applicable / overkill when:
-- The network has no DPI and the problem is something else (see [[Solving-fix-stale-update-urls-in-synoinfo]] — a URL fix may be enough).
+- The network has no DPI and the problem is something else (see [[Solving-fix-stale-update-urls-in-synoinfo.en]] — a URL fix may be enough).
 
 ## What the proxy covers
 
@@ -81,7 +81,7 @@ DSM picks up the settings immediately, no restart needed.
 
 ## Step 3. Roll back artefacts of the previous approach
 
-If the blackhole/Cloudflare fix from [[Solving-package-center-ocsp-cloudflare-blackhole]] was applied earlier — go through the rollback checklist in [[Solving-package-center-ocsp-cloudflare-blackhole#Rollback]]: remove the related Task Scheduler tasks, set MTU back to Auto, restore system files from backups.
+If the blackhole/Cloudflare fix from [[Solving-package-center-ocsp-cloudflare-blackhole.en]] was applied earlier — go through the rollback checklist in [[Solving-package-center-ocsp-cloudflare-blackhole.en#Rollback]]: remove the related Task Scheduler tasks, set MTU back to Auto, restore system files from backups.
 
 Otherwise leftover blackhole routes and overrides may conflict with the proxy and produce symptoms similar to the original problem.
 
@@ -133,11 +133,11 @@ The principle: the DSM proxy setting is applied **at the application layer** —
 - The SNI to Cloudflare and the actual exchange with Synology servers happen **from the proxy**, which is outside the DPI zone.
 - Content-based DPI does not help — the content inside the HTTPS tunnel is unavailable for analysis.
 
-This is fundamentally different from local-side attempts to override routes or /etc/hosts (see [[ADR-0001-package-center-hangs-on-sectigo-ocsp]] — that document explains why such approaches fall short against DPI applied to the TLS payload).
+This is fundamentally different from local-side attempts to override routes or /etc/hosts (see [[ADR-0001-package-center-hangs-on-sectigo-ocsp.en]] — that document explains why such approaches fall short against DPI applied to the TLS payload).
 
 ## Links
 
-- ADR for this guide: [[ADR-0003-package-center-via-external-proxy]]
-- Previous (deprecated) guide via blackhole + its rollback: [[Solving-package-center-ocsp-cloudflare-blackhole]]
-- Adjacent (still applicable) task — URLs in `synoinfo.conf`: [[Solving-fix-stale-update-urls-in-synoinfo]]
+- ADR for this guide: [[ADR-0003-package-center-via-external-proxy.en]]
+- Previous (deprecated) guide via blackhole + its rollback: [[Solving-package-center-ocsp-cloudflare-blackhole.en]]
+- Adjacent (still applicable) task — URLs in `synoinfo.conf`: [[Solving-fix-stale-update-urls-in-synoinfo.en]]
 - DSM Help, Proxy: Control Panel → Network → Connectivity → ? (built-in help).

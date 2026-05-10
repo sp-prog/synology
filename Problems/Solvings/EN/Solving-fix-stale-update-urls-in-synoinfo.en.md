@@ -13,9 +13,9 @@ tags:
   - howto
   - solving
 related:
-  - "[[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade]]"
-  - "[[ADR-0001-package-center-hangs-on-sectigo-ocsp]]"
-  - "[[Solving-package-center-ocsp-cloudflare-blackhole]]"
+  - "[[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.en]]"
+  - "[[ADR-0001-package-center-hangs-on-sectigo-ocsp.en]]"
+  - "[[Solving-package-center-ocsp-cloudflare-blackhole.en]]"
 ---
 
 # Fix stale update URLs in `/etc/synoinfo.conf`
@@ -23,7 +23,7 @@ related:
 > [!info] In short
 > After a DSM 6.x → 7.x upgrade (and sometimes between 7.x minors) the active `/etc/synoinfo.conf` retains legacy package-server URLs (`pkgupdate.synology.com`, `update.synology.com`, `small_info_path` without the `7`). The factory defaults in `/etc.defaults/synoinfo.conf` already point to `pkgupdate7.synology.com` / `update7.synology.com`.
 > **Fix:** diff the two files and selectively rewrite the diverging URL keys with `synosetkeyvalue`.
-> **Decision:** [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade]]
+> **Decision:** [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.en]]
 
 ## Symptoms
 
@@ -168,7 +168,7 @@ Expected:
 - `synopkg checkupdateall` → `exit=0` in reasonable time.
 
 > [!warning]
-> If `synopkg checkupdateall` still hangs — that is a **separate problem** unrelated to stale URLs: ISP-side DPI filtering of Cloudflare traffic. The URL fix does not address it. See [[Solving-package-center-external-proxy]] — the working solution via an external HTTP proxy.
+> If `synopkg checkupdateall` still hangs — that is a **separate problem** unrelated to stale URLs: ISP-side DPI filtering of Cloudflare traffic. The URL fix does not address it. See [[Solving-package-center-external-proxy.en]] — the working solution via an external HTTP proxy.
 
 ## Rollback
 
@@ -244,6 +244,6 @@ DS218play, DSM 7.3.2-86009 Update 3 (after an upgrade from DSM 6.x):
 
 ## Links
 
-- ADR for this guide: [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade]]
-- Related problem (OCSP + Cloudflare): [[ADR-0001-package-center-hangs-on-sectigo-ocsp]] and [[Solving-package-center-ocsp-cloudflare-blackhole]]
+- ADR for this guide: [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.en]]
+- Related problem (OCSP + Cloudflare): [[ADR-0001-package-center-hangs-on-sectigo-ocsp.en]] and [[Solving-package-center-ocsp-cloudflare-blackhole.en]]
 - `synoinfo.conf` reference: there is no official public documentation — the config is treated as a black box; treat `/etc.defaults/synoinfo.conf` as the source of truth.

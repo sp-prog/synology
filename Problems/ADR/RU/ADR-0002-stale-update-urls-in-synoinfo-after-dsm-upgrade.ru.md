@@ -13,8 +13,8 @@ tags:
   - configuration
   - adr
 related:
-  - "[[Solving-fix-stale-update-urls-in-synoinfo]]"
-  - "[[ADR-0001-package-center-hangs-on-sectigo-ocsp]]"
+  - "[[Solving-fix-stale-update-urls-in-synoinfo.ru]]"
+  - "[[ADR-0001-package-center-hangs-on-sectigo-ocsp.ru]]"
 ---
 
 # ADR-0002 — Синхронизация устаревших URL обновлений в `/etc/synoinfo.conf` после апгрейда DSM
@@ -25,7 +25,7 @@ related:
 ## Контекст
 
 ### Симптом
-При диагностике зависающего Package Center (см. [[ADR-0001-package-center-hangs-on-sectigo-ocsp]]) обнаружено: `/etc/synoinfo.conf` содержит URL вида `pkgupdate.synology.com`, `update.synology.com`, тогда как актуальные на DSM 7.x — с цифрой `7` в имени.
+При диагностике зависающего Package Center (см. [[ADR-0001-package-center-hangs-on-sectigo-ocsp.ru]]) обнаружено: `/etc/synoinfo.conf` содержит URL вида `pkgupdate.synology.com`, `update.synology.com`, тогда как актуальные на DSM 7.x — с цифрой `7` в имени.
 
 ### Расхождение, найденное на конкретной системе
 DSM 7.3.2-86009 Update 3, DS218play.
@@ -60,7 +60,7 @@ DSM при апгрейде между мажорными версиями (6.x 
 
 ### Влияние
 - `synopkg` и `synoupgrade` ходят на устаревшие хосты. На DSM 7.3 устаревший `pkgupdate.synology.com` (без `7`) отвечает **HTTP 404** от CloudFront за миллисекунды — то есть быстро, но без полезной нагрузки. Поведение Package Center в этом случае — пустой/некорректный ответ, а не отказ оборудования.
-- Правка обнаружена в ходе диагностики [[ADR-0001-package-center-hangs-on-sectigo-ocsp]] и применена для устранения «шума» при дальнейшей диагностике. Связь устаревших URL с основной проблемой зависания (она вызвана отдельным фактором — DPI-фильтрацией Cloudflare, см. [[ADR-0003-package-center-via-external-proxy]]) не исследовалась. Правка корректна как самостоятельная задача: на DSM 7.x все URL обновлений должны быть с `7`.
+- Правка обнаружена в ходе диагностики [[ADR-0001-package-center-hangs-on-sectigo-ocsp.ru]] и применена для устранения «шума» при дальнейшей диагностике. Связь устаревших URL с основной проблемой зависания (она вызвана отдельным фактором — DPI-фильтрацией Cloudflare, см. [[ADR-0003-package-center-via-external-proxy.ru]]) не исследовалась. Правка корректна как самостоятельная задача: на DSM 7.x все URL обновлений должны быть с `7`.
 
 ## Рассмотренные варианты
 
@@ -110,7 +110,7 @@ DSM при апгрейде между мажорными версиями (6.x 
 
 Перед изменениями — обязательный бэкап `/etc/synoinfo.conf`.
 
-Подробная инструкция: [[Solving-fix-stale-update-urls-in-synoinfo]].
+Подробная инструкция: [[Solving-fix-stale-update-urls-in-synoinfo.ru]].
 
 ## Последствия
 
@@ -134,6 +134,6 @@ DSM при апгрейде между мажорными версиями (6.x 
 
 ## Связанные решения
 
-- [[ADR-0001-package-center-hangs-on-sectigo-ocsp]] — корневая причина зависаний Package Center; фикс из ADR-0002 необходим, но недостаточен.
-- [[Solving-fix-stale-update-urls-in-synoinfo]] — пошаговая инструкция применения этого ADR.
-- [[Solving-package-center-ocsp-cloudflare-blackhole]] — связанная инструкция по OCSP-фиксу.
+- [[ADR-0001-package-center-hangs-on-sectigo-ocsp.ru]] — корневая причина зависаний Package Center; фикс из ADR-0002 необходим, но недостаточен.
+- [[Solving-fix-stale-update-urls-in-synoinfo.ru]] — пошаговая инструкция применения этого ADR.
+- [[Solving-package-center-ocsp-cloudflare-blackhole.ru]] — связанная инструкция по OCSP-фиксу.

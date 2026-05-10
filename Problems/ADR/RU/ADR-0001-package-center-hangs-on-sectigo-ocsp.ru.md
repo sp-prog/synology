@@ -17,16 +17,16 @@ tags:
   - adr
   - superseded
 related:
-  - "[[Solving-package-center-ocsp-cloudflare-blackhole]]"
-  - "[[ADR-0003-package-center-via-external-proxy]]"
-  - "[[Solving-package-center-external-proxy]]"
+  - "[[Solving-package-center-ocsp-cloudflare-blackhole.ru]]"
+  - "[[ADR-0003-package-center-via-external-proxy.ru]]"
+  - "[[Solving-package-center-external-proxy.ru]]"
 ---
 
 # ADR-0001 — Обход OCSP-проверки `pkgupdate7.synology.com` через blackhole-маршруты
 
 > [!warning] Superseded
 > Решение **частично и нестабильно** на сетях с DPI-фильтрацией (ТСПУ и аналогах). См. [[#Почему решение не работает в условиях DPI]].
-> Замещено: [[ADR-0003-package-center-via-external-proxy]].
+> Замещено: [[ADR-0003-package-center-via-external-proxy.ru]].
 
 > [!summary]
 > На Synology DS218play (DSM 7.3.2-86009 Update 3) `synopkg checkupdate*` и Package Center виснут на 30+ секунд. Изначальная гипотеза: OCSP-responder Sectigo (`ocsp.sectigo.com` / `crl.sectigo.com`) хостится на Cloudflare, провайдер режет TCP-данные к Cloudflare, поэтому TLS-стек ждёт OCSP-таймаут.
@@ -62,7 +62,7 @@ related:
 TLS-handshake `synopkg` к `pkgupdate7.synology.com` инициирует **OCSP-проверку отзыва сертификата Sectigo**. OCSP-responder Sectigo хостится на Cloudflare → запрос виснет в TCP-ретрансмиссиях → `synopkg` ждёт OCSP-таймаут на каждый запрос обновлений.
 
 ### Сопутствующие проблемы (исправлены отдельно)
-- В `/etc/synoinfo.conf` после апгрейда DSM остались устаревшие URL пакетных серверов. См. [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade]] — это решение остаётся валидным независимо от ADR-0001.
+- В `/etc/synoinfo.conf` после апгрейда DSM остались устаревшие URL пакетных серверов. См. [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.ru]] — это решение остаётся валидным независимо от ADR-0001.
 - В `/usr/syno/etc/packages/feeds` был сторонний репозиторий `packages.synocommunity.com` (на Fastly, работает), очищен на время диагностики.
 
 ## Рассмотренные варианты
@@ -80,7 +80,7 @@ TLS-handshake `synopkg` к `pkgupdate7.synology.com` инициирует **OCSP
 ### Вариант C — VPN/WARP для всего трафика NAS
 - **Плюсы:** полностью обходит региональную блокировку.
 - **Минусы:** замедляет весь обмен с Synology, увеличивает зависимости (VPN-клиент, его поддержка), на DS218play ресурсов и так впритык (1 ГБ RAM).
-- **Решение:** отвергнут как избыточный (на тот момент). **В итоге переоткрыт в [[ADR-0003-package-center-via-external-proxy]] в форме внешнего HTTP-прокси.**
+- **Решение:** отвергнут как избыточный (на тот момент). **В итоге переоткрыт в [[ADR-0003-package-center-via-external-proxy.ru]] в форме внешнего HTTP-прокси.**
 
 ### Вариант D — `iptables -j REJECT --reject-with tcp-reset` на Cloudflare-подсети
 - **Плюсы:** работает, отдаёт TCP RST → мгновенный отказ.
@@ -152,10 +152,10 @@ Blackhole-подход решает только подзадачу «сдела
 
 ### Положительные
 - ADR полезен как карта тупиков: следующий, кто столкнётся с симптомом «Package Center виснет», не будет повторять путь от `/etc/hosts` к blackhole.
-- Сопутствующая работа по [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade|устаревшим URL]] остаётся валидной и нужной.
+- Сопутствующая работа по [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.ru|устаревшим URL]] остаётся валидной и нужной.
 
 ### Отрицательные
-- В DSM на NAS остались артефакты, требующие отката (Task Scheduler-задачи, blackhole-маршруты, /32-исключения, изменённый MTU). Скрипт отката — в [[Solving-package-center-ocsp-cloudflare-blackhole#Откат|deprecated Solving]].
+- В DSM на NAS остались артефакты, требующие отката (Task Scheduler-задачи, blackhole-маршруты, /32-исключения, изменённый MTU). Скрипт отката — в [[Solving-package-center-ocsp-cloudflare-blackhole.ru#Откат|deprecated Solving]].
 
 ## Метрики проверки (исторические)
 
@@ -164,8 +164,8 @@ Blackhole-подход решает только подзадачу «сдела
 
 ## Ссылки
 
-- Замещающее решение: [[ADR-0003-package-center-via-external-proxy]] и [[Solving-package-center-external-proxy]].
-- Сопутствующая проблема URL: [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade]].
-- Deprecated-инструкция (с шагами отката): [[Solving-package-center-ocsp-cloudflare-blackhole]].
+- Замещающее решение: [[ADR-0003-package-center-via-external-proxy.ru]] и [[Solving-package-center-external-proxy.ru]].
+- Сопутствующая проблема URL: [[ADR-0002-stale-update-urls-in-synoinfo-after-dsm-upgrade.ru]].
+- Deprecated-инструкция (с шагами отката): [[Solving-package-center-ocsp-cloudflare-blackhole.ru]].
 - Cloudflare IP ranges: <https://www.cloudflare.com/ips-v4/>
 - Sectigo OCSP/CRL endpoints: <https://sectigo.com/resource-library/cps-and-cp>
